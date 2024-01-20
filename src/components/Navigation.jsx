@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import UserMenu from './Registration/UserMenu';
-import Typography from '@mui/material/Typography';
+
 import Button from '@mui/material/Button';
 
 const Navigation = () => {
@@ -24,9 +24,7 @@ const Navigation = () => {
           fontWeight: 600,
           fontSize: '28px'
         }}>
-          <Typography variant="h2" component={Link} to="/" style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'none', color: '#fff', marginBottom: '10px' }}>
-            Phonebook
-          </Typography>
+          
           <div style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <Button component={Link} to="/" style={{ color: '#fff', fontSize: '24px', fontWeight: 500, transition: 'color 0.3s ease-in-out', '&:hover': { color: '#FFC107' } }}>
               Home
