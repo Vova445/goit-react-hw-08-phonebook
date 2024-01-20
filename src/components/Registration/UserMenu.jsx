@@ -30,14 +30,17 @@ const UserMenu = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: '#59b1c8',
+        backgroundColor: '#129cd6',
+        border: 'none',
         color: '#fff',
-        borderRadius: 10,
+        // borderRadius: 10,
         maxHeight: '100px',
         width: 300,
+        margin: 2,
         position: 'fixed',
-        right: 20,
-        top: 20,
+        top: 0,
+        right: -20,
+        zIndex: 0,
       }}
     >
       {loading ? (

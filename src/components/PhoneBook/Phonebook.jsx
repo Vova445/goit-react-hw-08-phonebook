@@ -13,11 +13,12 @@ const styles = {
   container: {
     width: 1000,
     margin: '0 auto',
-    marginTop: 10,
+    marginTop: 50,
     marginBottom: 6,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    zIndex: 3,
   },
   title: {
     marginBottom: 4,
@@ -35,7 +36,7 @@ const styles = {
     height: '100%',
     flexDirection: 'column',
     alignItems: 'center',
-    '& .MuiButton-root': {
+    '& .MuiButtonRoot': { 
       marginLeft: 1,
       backgroundColor: '#1f9cb7',
       transition: 'color 0.3s ease-in-out',
@@ -43,10 +44,10 @@ const styles = {
       borderRadius: '20px',
       '&:hover': {
         backgroundColor: '#1b849a',
-        
       },
     },
   },
+
   contactsSection: {
     marginTop: 60,
     backgroundColor: 'white',
@@ -83,9 +84,7 @@ const Phonebook = () => {
     <div style={styles.container}>
       {isAuthenticated ? (
         <>
-          <Typography variant="h1" style={{ fontWeight: 600, ...styles.title }}>
-            Phonebook
-          </Typography>
+         
           <ContactForm />
         </>
       ) : (

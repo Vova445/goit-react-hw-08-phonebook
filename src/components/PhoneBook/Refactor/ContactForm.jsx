@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
 import { Report } from 'notiflix/build/notiflix-report-aio';
+import Typography from '@mui/material/Typography';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -70,6 +71,8 @@ const ContactForm = () => {
   };
 
   return (
+    <>
+    
     <form
       sx={{
         display: "flex",
@@ -84,7 +87,9 @@ const ContactForm = () => {
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
       }}
       onSubmit={handleSubmit}
-    >
+    ><Typography variant="h1" style={{ fontWeight: 600, fontSize: 32}}>
+    Phonebook
+  </Typography>
       <TextField
         sx={{ width: "100%" }}
         label="Name"
@@ -121,6 +126,7 @@ const ContactForm = () => {
         {isAdding ? 'Adding...' : 'Add Contact'}
       </Button>
     </form>
+    </>
   );
 };
 
