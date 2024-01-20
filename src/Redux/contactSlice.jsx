@@ -1,21 +1,54 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
-  const response = await axios.get('https://65a1012f600f49256fb0b0d3.mockapi.io/contacts');
-  return response.data;
+const BASE_URL = 'https://connections-api.herokuapp.com';
+
+export const fetchContacts = createAsyncThunk('contacts/fetchAll', async (_, { getState }) => {
+  const token = getState().auth.token;
+
+  try {
+    const response = await axios.get(`${BASE_URL}/contacts`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 });
 
-export const addContact = createAsyncThunk('contacts/addContact', async (contact) => {
-  const response = await axios.post('https://65a1012f600f49256fb0b0d3.mockapi.io/contacts', contact);
-  return response.data;
+
+export const addContact = createAsyncThunk('contacts/addContact', async (contact, { getState }) => {
+  const token = getState().auth.token;
+
+  try {
+    const response = await axios.post(`${BASE_URL}/contacts`, contact, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 });
 
-export const deleteContact = createAsyncThunk('contacts/deleteContact', async (id) => {
-  await axios.delete(`https://65a1012f600f49256fb0b0d3.mockapi.io/contacts/${id}`);
-  return id;
-});
 
+export const deleteContact = createAsyncThunk('contacts/deleteContact', async (id, { getState }) => {
+  const token = getState().auth.token;
+
+  try {
+    await axios.delete(`${BASE_URL}/contacts/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return id;
+  } catch (error) {
+    throw error;
+  }
+});
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -23,8 +56,8 @@ const contactsSlice = createSlice({
     contacts: [],
     filter: '',
     isLoading: false,
-    isAdding: false,  
-    isDeleting: false, 
+    isAdding: false,
+    isDeleting: false,
     error: null,
   },
   reducers: {
@@ -52,8 +85,9 @@ const contactsSlice = createSlice({
       })
       .addCase(addContact.fulfilled, (state, action) => {
         state.isAdding = false;
-        state.contacts.push(action.payload);
+        state.contacts = [...state.contacts, action.payload];
       })
+      
       .addCase(addContact.rejected, (state, action) => {
         state.isAdding = false;
         state.error = action.error.message;
