@@ -20,7 +20,7 @@ const Login = () => {
       await dispatch(loginUser({ email, password }));
       setEmail('');
       setPassword('');
-      navigate('/');
+      navigate('/contacts');
     } catch (error) {
       
     }

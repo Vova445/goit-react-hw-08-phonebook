@@ -5,12 +5,15 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const UserMenu = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const loading = useSelector((state) => state.auth.loading);
+  const navigate = useNavigate();
+  const location = useLocation(); 
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -20,7 +23,12 @@ const UserMenu = () => {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
+    navigate('/');
   };
+
+  if (location.pathname !== '/contacts') {
+    return null; 
+  }
 
   return (
     <Paper
@@ -33,7 +41,6 @@ const UserMenu = () => {
         backgroundColor: '#129cd6',
         border: 'none',
         color: '#fff',
-        // borderRadius: 10,
         maxHeight: '100px',
         width: 300,
         margin: 2,

@@ -1,18 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import UserMenu from './Registration/UserMenu';
 
 import Button from '@mui/material/Button';
 
 const Navigation = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const location = useLocation();
+  const showMenu = location.pathname !== '/contacts';
 
   return (
     <nav>
-      {isAuthenticated ? (
-        <UserMenu />
-      ) : (
+      {showMenu && (
         <div style={{
           display: 'flex',
           flexDirection: 'column',
@@ -24,7 +22,6 @@ const Navigation = () => {
           fontWeight: 600,
           fontSize: '28px'
         }}>
-          
           <div style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <Button component={Link} to="/" style={{ color: '#fff', fontSize: '24px', fontWeight: 500, transition: 'color 0.3s ease-in-out', '&:hover': { color: '#FFC107' } }}>
               Home
@@ -38,6 +35,7 @@ const Navigation = () => {
           </div>
         </div>
       )}
+      <UserMenu />
     </nav>
   );
 };

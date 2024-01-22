@@ -35,7 +35,7 @@ const Register = () => {
       setPassword('');
       setPasswordError('');
       setEmailError('');
-      navigate('/');
+      navigate('/contacts');
     } catch (error) {
       if (error.message === 'Email is already in use. Please use a different email.') {
         setEmailError(error.message);
