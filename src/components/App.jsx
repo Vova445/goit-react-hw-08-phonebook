@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Phonebook from './PhoneBook/Phonebook';
@@ -26,9 +25,9 @@ export const App = () => {
       <Navigation />
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '100px' }}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={isAuthenticated ? <Navigate to="/contacts" /> : <Home />} />
+          <Route path="/register" element={isAuthenticated ? <Navigate to="/contacts" /> : <Register />} />
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/contacts" /> : <Login />} />
           <Route path="/contacts" element={<PrivateRoute element={<Phonebook />} redirectTo="/login" />} />
           <Route path="*" element={<Navigate to={isAuthenticated ? '/contacts' : '/'} />} />
         </Routes>
