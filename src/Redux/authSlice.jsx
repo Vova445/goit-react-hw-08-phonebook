@@ -75,7 +75,7 @@ export const loginUser = createAsyncThunk('auth/loginUser', async ({ email, pass
 
 
 
-export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { getState }) => {
+export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { getState, rejectWithValue }) => {
   try {
     const token = getState().auth.token;
 
@@ -91,16 +91,14 @@ export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { getSta
 
     localStorage.removeItem('authState');
 
-    
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data;
+    if (axios.isAxiosError(error) && error.response && error.response.status === 401) {
+      return rejectWithValue({ logoutOn401: true });
     } else {
       throw error;
     }
   }
 });
-
 export const getCurrentUser = createAsyncThunk('auth/getCurrentUser', async (_, { getState, rejectWithValue }) => {
   try {
     const token = getState().auth.token;
@@ -167,8 +165,15 @@ const authSlice = createSlice({
         state.loading = false;
         localStorage.removeItem('authState');
       })
-      .addCase(logoutUser.rejected, (state) => {
+      .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
+
+        if (action.payload && action.payload.logoutOn401) {
+          state.isAuthenticated = false;
+          state.token = null;
+          state.user = null;
+          localStorage.removeItem('authState');
+        }
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.isAuthenticated = true;
