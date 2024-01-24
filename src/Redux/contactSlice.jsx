@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { Report } from 'notiflix';
 
 const BASE_URL = 'https://connections-api.herokuapp.com';
 
@@ -14,6 +15,10 @@ export const fetchContacts = createAsyncThunk('contacts/fetchAll', async (_, { g
     });
     return response.data;
   } catch (error) {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('authState'); 
+    }
+
     throw error;
   }
 });
@@ -78,6 +83,13 @@ const contactsSlice = createSlice({
       .addCase(fetchContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        if (action.payload && action.payload.logoutOn401) {
+          state.isAuthenticated = false;
+          state.token = null;
+          state.user = null;
+          localStorage.removeItem('authState');
+        }
+        Report.failure('Error', 'Update the page');
       })
       .addCase(addContact.pending, (state) => {
         state.isAdding = true;
